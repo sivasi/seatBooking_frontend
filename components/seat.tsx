@@ -146,7 +146,7 @@ const SeatBooking = () => {
               // use of bfs to fill the next seat which is not blocked and which is nearest to the current seat
 
               while (q.length > 0) {
-                const [x, y]: [number, number] = q.shift()!;
+                const [x]: [number, number] = q.shift()!;
 
                   cnt++;
                   // break the loop if we filled the K seats
