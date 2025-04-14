@@ -5,6 +5,7 @@
 import Link from "next/link";
 
 export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
+  console.log(error.message);
   return (
     <div className="w-full flex flex-col items-center mt-4 mx-auto  lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 border-blue-300">
@@ -36,7 +37,7 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
                         </div>
                     </div>
                     <button type="submit" onClick={() => reset()} className="w-full text-white bg-blue-600 cursor-pointer hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Try Again</button>
-                    <h1 className="text-md flex justify-center text-red-600 dark:text-red-400 mb-4">{error.message === "User already exists" ? "User email already exist": error.message}</h1>
+                    <h1 className="text-md flex justify-center text-red-600 dark:text-red-400 mb-4">User email already exist or Server Error</h1>
 
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                         Have an account ? <Link href="/login" className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign in</Link>

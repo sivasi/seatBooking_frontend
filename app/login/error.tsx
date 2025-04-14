@@ -5,6 +5,7 @@
 import Link from "next/link";
 
 export default function ErrorPage({ error, reset }: { error: Error; reset: () => void }) {
+  console.log(error.message);
   return (
     <div className="flex flex-col items-center mt-4 mx-auto lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 border-blue-300">
@@ -32,7 +33,7 @@ export default function ErrorPage({ error, reset }: { error: Error; reset: () =>
                         </div>
                     </div>
                     <button onClick={() => reset()} type="submit" className="w-full text-white cursor-pointer bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Try again</button>
-                    <h1 className="text-md flex justify-center text-red-600 dark:text-red-400 mb-4">{error.message}</h1>
+                    <h1 className="text-md flex justify-center text-red-600 dark:text-red-400 mb-4">Invalid Credential or Server Error</h1>
 
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                         Don’t have an account yet? <Link href="/register" className="font-medium text-blue-600 hover:underline dark:text-blue-500">Sign up</Link>
