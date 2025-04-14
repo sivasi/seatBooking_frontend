@@ -1,4 +1,5 @@
 import api from '@/lib/api'
+import { AxiosError } from 'axios'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -10,12 +11,13 @@ export default function RegisterPage() {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    try{
+    try {
         await api.post('/auth/register', { username, email, password });
-
-    } catch (error: any) {
-      // Pass the error message to be handled in app/error.tsx
-      throw new Error(error?.response?.data?.message || 'Register failed. Please try again.')
+    
+    } catch (error) {
+        const axiosError = error as AxiosError<{ message?: string }>;
+        const message = axiosError.response?.data?.message || 'Register failed. Please try again.';
+        throw new Error(message);
     }
 
     redirect('/login')

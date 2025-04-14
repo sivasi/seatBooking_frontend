@@ -1,6 +1,7 @@
 // app/login/page.tsx
 'use server'
 import api from '@/lib/api'
+import { AxiosError } from 'axios'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
@@ -17,9 +18,10 @@ export default async function LoginPage() {
     try{
       res = await api.post('/auth/login', { email, password });
 
-    } catch (error: any) {
-      // Pass the error message to be handled in app/error.tsx
-      throw new Error(error?.response?.data?.message || 'Login failed. Please try again.')
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+      const message = axiosError.response?.data?.message || 'Login failed. Please try again.';
+      throw new Error(message);
     }
 
     try{
@@ -35,9 +37,12 @@ export default async function LoginPage() {
         secure: process.env.NODE_ENV === 'production',
       })
     }
-    catch (error: any) {
-      // Pass the error message to be handled in app/error.tsx
-      throw new Error('Error in setting Cookies')
+    catch (error: unknown) {
+      let message = 'Error in setting Cookies';
+      if (error instanceof Error) {
+        message += `: ${error.message}`;
+      }
+      throw new Error(message);
     }
 
     redirect('/')
