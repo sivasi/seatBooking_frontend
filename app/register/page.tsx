@@ -10,7 +10,13 @@ export default function RegisterPage() {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    await api.post('/auth/register', { username, email, password })
+    try{
+        await api.post('/auth/register', { username, email, password });
+
+    } catch (error: any) {
+      // Pass the error message to be handled in app/error.tsx
+      throw new Error(error?.response?.data?.message || 'Register failed. Please try again.')
+    }
 
     redirect('/login')
   }

@@ -12,19 +12,33 @@ export default async function LoginPage() {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
-    const res = await api.post('/auth/login', { email, password })
+    let res;
 
-    const token = res.data.token
+    try{
+      res = await api.post('/auth/login', { email, password });
 
-    const cookieStore = await cookies()
+    } catch (error: any) {
+      // Pass the error message to be handled in app/error.tsx
+      throw new Error(error?.response?.data?.message || 'Login failed. Please try again.')
+    }
 
-    cookieStore.set('token', token, {
-      httpOnly: true,
-      path: '/',
-      maxAge: 60 * 60 * 12,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-    })
+    try{
+      const token = res.data.token
+
+      const cookieStore = await cookies()
+  
+      cookieStore.set('token', token, {
+        httpOnly: true,
+        path: '/',
+        maxAge: 60 * 60 * 12,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      })
+    }
+    catch (error: any) {
+      // Pass the error message to be handled in app/error.tsx
+      throw new Error('Error in setting Cookies')
+    }
 
     redirect('/')
   }
